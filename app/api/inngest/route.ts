@@ -2,15 +2,17 @@ import { serve } from 'inngest/next';
 import { inngest } from '@/inngest/client';
 import { processImage, helloWorld } from '@/inngest/functions';
 
-export const { GET, POST, PUT } = serve({
+// Create the serve handler
+const handler = serve({
   client: inngest,
   functions: [
     processImage,
     helloWorld,
   ],
   signingKey: process.env.INNGEST_SIGNING_KEY,
-  serveHost: process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : undefined,
-  servePath: '/api/inngest',
 });
+
+// Export all required HTTP methods for Inngest
+export const GET = handler.GET;
+export const POST = handler.POST;
+export const PUT = handler.PUT;
