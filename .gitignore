@@ -40,3 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# Google Service Account credentials - NEVER commit these!
+gul-tekin-muhendislik-*.json
+service-account-*.txt
+service-account-*.json
+*-base64.txt

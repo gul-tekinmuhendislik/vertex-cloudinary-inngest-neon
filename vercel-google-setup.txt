@@ -1,0 +1,57 @@
+VERCEL İÇİN GOOGLE SERVICE ACCOUNT KURULUM ADIMLARI
+====================================================
+
+1. SERVICE ACCOUNT OLUŞTURMA:
+-----------------------------
+- Google Cloud Console'a gidin: https://console.cloud.google.com
+- "IAM & Admin" > "Service Accounts" seçin
+- "Create Service Account" tıklayın
+- İsim verin (örn: "vercel-drive-access")
+- "Create and Continue" tıklayın
+- Role olarak "Google Drive API > Drive API Full" seçin
+- "Done" tıklayın
+
+2. JSON KEY İNDİRME:
+--------------------
+- Oluşturduğunuz service account'a tıklayın
+- "Keys" sekmesine gidin
+- "Add Key" > "Create New Key" > "JSON" seçin
+- Dosya otomatik indirilecek (örn: project-name-123456-abc123.json)
+
+3. BASE64 ENCODE ETME:
+----------------------
+Linux/Mac Terminal:
+cat service-account-key.json | base64 -w 0 > base64-key.txt
+
+Windows PowerShell:
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("service-account-key.json")) | Out-File base64-key.txt
+
+4. VERCEL'E EKLEME:
+-------------------
+- Vercel Dashboard'a gidin
+- Projenizi seçin
+- "Settings" > "Environment Variables"
+- "Add New" tıklayın:
+
+  Variable Name: GOOGLE_SERVICE_ACCOUNT_KEY_BASE64
+  Value: [base64-key.txt dosyasının içeriğini yapıştırın]
+  Environment: ✓ Production ✓ Preview ✓ Development
+
+- "Save" tıklayın
+
+5. DRIVE API'YI AKTİFLEŞTİRME:
+-------------------------------
+Google Cloud Console'da:
+- "APIs & Services" > "Library"
+- "Google Drive API" arayın ve seçin
+- "Enable" tıklayın
+- "Google Sheets API" için aynısını yapın (Sheets kullanıyorsanız)
+
+6. TEST ETME:
+-------------
+Deployment sonrası test için:
+https://your-app.vercel.app/api/drive/test
+
+NOT: Service Account'un erişmesi gereken Drive dosyalarını/klasörlerini
+service account email'i ile paylaşmayı unutmayın!
+(service account email'i JSON dosyasında "client_email" alanında bulunur)
