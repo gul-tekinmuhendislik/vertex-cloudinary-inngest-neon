@@ -9,4 +9,8 @@ export const { GET, POST, PUT } = serve({
     helloWorld,
   ],
   signingKey: process.env.INNGEST_SIGNING_KEY,
+  serveHost: process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : undefined,
+  servePath: '/api/inngest',
 });
